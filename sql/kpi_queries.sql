@@ -1,28 +1,22 @@
--- Where the KPI queries will end up
-
--- Total content pieces
+-- KPI: Total content published
 SELECT COUNT(*) AS total_content
 FROM media_events;
 
--- Total engagement per platform
-SELECT platform,
-       SUM(views) AS total_views,
-       SUM(likes) AS total_likes,
-       SUM(shares) AS total_shares,
-       SUM(comments) AS total_comments
+-- KPI: Total views across all content
+SELECT SUM(views) AS total_views
+FROM media_events;
+
+-- KPI: Overall engagement rate
+SELECT
+    SUM(likes + shares + comments) * 1.0 /
+    SUM(views) AS engagement_rate
+FROM media_events;
+
+-- KPI: Highest-performing platform by views
+SELECT
+    platform,
+    SUM(views) AS total_views
 FROM media_events
 GROUP BY platform
-ORDER BY total_views DESC;
-
--- Engagement rates
-SELECT platform,
-       SUM(likes + shares + comments)::float / NULLIF(SUM(views), 0) AS engagement_rate
-FROM media_events
-GROUP BY platform;
-
--- Top performing content types
-SELECT content_type,
-       SUM(views) AS total_views
-FROM media_events
-GROUP BY content_type
-ORDER BY total_views DESC;
+ORDER BY total_views DESC
+LIMIT 1;

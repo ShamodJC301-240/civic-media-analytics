@@ -5,16 +5,20 @@ from pathlib import Path
 
 fake = Faker()
 
-# Output path 
+# ~ Output Path Setup
+
 output_path = Path("data") / "social_media_metrics.csv"
 output_path.parent.mkdir(parents=True, exist_ok=True)
+
+# ~ Configuration
 
 platforms = ["youtube", "instagram", "tiktok", "twitter", "facebook"]
 content_types = ["video", "post", "reel", "story", "short"]
 
 rows = []
 
-# Generate 200 rows of fake data
+# ~ Data Generation
+
 for _ in range(200):
     platform = random.choice(platforms)
     content_type = random.choice(content_types)
@@ -33,7 +37,8 @@ for _ in range(200):
         comments
     ])
 
-# Write CSV
+# ~ Write CSV
+
 with open(output_path, "w", newline="") as file:
     writer = csv.writer(file)
 
@@ -47,7 +52,9 @@ with open(output_path, "w", newline="") as file:
         "comments"
     ])
 
-    # Data
+    # Data rows
     writer.writerows(rows)
+
+# ~ Completion
 
 print(f"CSV created at: {output_path.resolve()}")
